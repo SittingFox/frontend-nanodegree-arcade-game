@@ -43,14 +43,32 @@ Entity.prototype.setPosition = function() {
 // a handleInput() method.
 var Player = function() {
 	Entity.call(this);
-	this.sprite = 'images/char-boy.png';
+	this.sprite = 'images/char-cat-girl.png';
+	// How far (in pixels) movement is
+	this.step = {
+		x: 100,
+		y: 80
+	};
 };
 
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
-Player.prototype.handleInput = function(key) {
-	
+// Movement based on key input, without leaving map
+Player.prototype.handleInput = function(key) {	
+	if (key == 'left' && this.x > 80) {
+		this.x -= this.step.x;
+	}
+	if (key == 'right' && this.x < 360) {
+		this.x += this.step.x;
+	}
+	if (key == 'up' && this.y > 0) {
+		this.y -= this.step.y;
+	}
+	if (key == 'down' && this.y < 380) {
+		this.y += this.step.y;
+	}
+		
 };
 
 Player.prototype.setPosition = function() {
