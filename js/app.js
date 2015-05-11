@@ -28,15 +28,33 @@ Entity.prototype.setPosition = function() {};
 var Enemy = function() {
 	Entity.call(this);    
     this.sprite = 'images/enemy-bug.png';
+    this.speeds = [100, 200, 300];
+    this.setSpeed();
 }
 
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
-Entity.prototype.setPosition = function() {
-	this.x = 100;
+Enemy.prototype.update = function(dt) {
+	this.x += this.currentSpeed * dt;
+	
+	if (this.x > 600) {
+		this.setPosition();
+	}
+}
+
+
+Enemy.prototype.setPosition = function() {
+	this.x = -200;
 	this.y = 100;
 };
+
+// Setup speed for enemy
+Enemy.prototype.setSpeed = function() {
+	var speedChoice = Math.floor(Math.random()*3);
+	
+	this.currentSpeed = this.speeds[speedChoice];
+}
 
 // Now write your own player class
 // This class requires an update(), render() and

@@ -1,3 +1,2 @@
-I thought a switch statement would be nicer than multiple ifs for movement. I 
-found how to do them in JavaScript here:
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch
+I looked up how to use random numbers in JavaScript and learned how from here:
+http://www.javascriptkit.com/javatutors/randomnum.shtml
