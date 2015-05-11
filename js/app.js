@@ -1,31 +1,39 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
+// The parent of the Enemy and Player objects. I've seen
+// this word used in video games, and I thought it would
+// fit for this.
+var Entity = function() {
+	// The image/sprite for our entities, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    
+	this.sprite = '';
     this.setPosition();
 };
 
-// Update the enemy's position, required method for game
+// Update the entity's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
+Entity.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
-    // all computers.
-    
+    // all computers. 
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
+// Draw the entity on the screen, required method for game
+Entity.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Since both enemy and player need to set positions
-Enemy.prototype.setPosition = function() {
+Entity.prototype.setPosition = function() {};
+
+// Enemies our player must avoid
+var Enemy = function() {
+	Entity.call(this);    
+    this.sprite = 'images/enemy-bug.png';
+}
+
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.constructor = Enemy;
+
+Entity.prototype.setPosition = function() {
 	this.x = 100;
 	this.y = 100;
 };
@@ -34,11 +42,11 @@ Enemy.prototype.setPosition = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-	Enemy.call(this);
+	Entity.call(this);
 	this.sprite = 'images/char-boy.png';
 };
 
-Player.prototype = Object.create(Enemy.prototype);
+Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
 Player.prototype.handleInput = function(key) {
