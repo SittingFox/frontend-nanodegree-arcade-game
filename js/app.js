@@ -20,7 +20,8 @@ Entity.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Enemies our player must avoid
+
+// Enemies our player must avoid, inherits from Entity class
 var Enemy = function() {
 	Entity.call(this);    
     this.sprite = 'images/enemy-bug.png';
@@ -47,7 +48,6 @@ Enemy.prototype.update = function(dt) {
 	}
 }
 
-
 Enemy.prototype.setPosition = function() {
 	var trackChoice = Math.floor(Math.random()*3);
 	var currentTrack = this.tracks[trackChoice];
@@ -62,9 +62,18 @@ Enemy.prototype.setSpeed = function() {
 	this.currentSpeed = this.speeds[speedChoice];
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// See if player's position is within the enemy's
+Enemy.prototype.hasHitPlayer = function (playerX, playerY) {
+	if ( (this.y == playerY) && 
+		( (this.x <= playerX + 70) && (this.x >= playerX - 70) ) ) {
+		
+		return true;
+	}
+	
+	return false;
+}
+
+// Player class, which inherits from Entity class
 var Player = function() {
 	Entity.call(this);
 	this.sprite = 'images/char-cat-girl.png';
@@ -87,13 +96,12 @@ Player.prototype.handleInput = function(key) {
 	if (key == 'right' && this.x < 360) {
 		this.x += this.step.x;
 	}
-	if (key == 'up' && this.y > 0) {
+	if (key == 'up' && this.y > -20) {
 		this.y -= this.step.y;
 	}
 	if (key == 'down' && this.y < 380) {
 		this.y += this.step.y;
 	}
-		
 };
 
 Player.prototype.setPosition = function() {
@@ -101,12 +109,28 @@ Player.prototype.setPosition = function() {
 	this.y = 380;
 };
 
+Player.prototype.update = function() {
+	if (this.y < 0) {
+		this.setPosition();
+	}
+}
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
-var player = new Player();
+var allEnemies;
+var player;
+
+function checkCollisions() {
+	for (enemy in allEnemies) {
+		var thisEnemy = allEnemies[enemy];
+
+		if ( thisEnemy.hasHitPlayer(player.x, player.y) ) {
+			player.setPosition();
+		}
+	}
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
