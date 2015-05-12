@@ -1,2 +1,6 @@
 I looked up how to use random numbers in JavaScript and learned how from here:
 http://www.javascriptkit.com/javatutors/randomnum.shtml
+
+Thanks to the Dive Into HTML5 page for how to use textBaseline to make adding 
+text to the very top easier:
+http://diveintohtml5.info/canvas.html

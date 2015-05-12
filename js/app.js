@@ -1,6 +1,4 @@
-// The parent of the Enemy and Player objects. I've seen
-// this word used in video games, and I thought it would
-// fit for this.
+// The parent of the Enemy and Player objects.
 var Entity = function() {
 	// The image/sprite for our entities, this uses
     // a helper we've provided to easily load images
@@ -83,10 +81,18 @@ var Player = function() {
 		y: 80
 	};
 	this.setPosition();
+	
+	this.score = 0;
 };
 
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
+
+Player.prototype.update = function() {
+	if (this.y < 0) {
+		this.crossed();
+	}
+}
 
 // Movement based on key input, without leaving map
 Player.prototype.handleInput = function(key) {	
@@ -109,10 +115,9 @@ Player.prototype.setPosition = function() {
 	this.y = 380;
 };
 
-Player.prototype.update = function() {
-	if (this.y < 0) {
-		this.setPosition();
-	}
+Player.prototype.crossed = function() {
+	this.score++;
+	this.setPosition();
 }
 
 // Now instantiate your objects.
@@ -144,3 +149,10 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+// This draws text onto the screen.
+function renderText() {
+	ctx.clearRect(0, 0, ctx.canvas.width, 40);
+	var canvasHeight = ctx.canvas.height;
+	ctx.fillText("Score: " + player.score, 0, 5);
+}
