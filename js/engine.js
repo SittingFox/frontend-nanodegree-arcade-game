@@ -96,6 +96,10 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+		if (hearts.length == 0) {
+			reset();
+		}
+		
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -109,6 +113,9 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
+		// Clear top area
+		ctx.clearRect(0, 0, canvas.width, 80);
+		
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -159,6 +166,10 @@ var Engine = (function(global) {
         });
 
         player.render();
+        
+        hearts.forEach(function(heart) {
+            heart.render();
+        });
     }
 
     /* This function does nothing but it could have been a good place to
@@ -169,6 +180,7 @@ var Engine = (function(global) {
         // noop
         allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 		player = new Player();
+		hearts = [new Heart(455, -20), new Heart(405, -20), new Heart(355, -20)];
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -180,7 +192,8 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-cat-girl.png'
+        'images/char-cat-girl.png',
+        'images/Heart.png'
     ]);
     Resources.onReady(init);
 

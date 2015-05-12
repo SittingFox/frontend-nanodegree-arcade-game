@@ -1,6 +1,9 @@
 I looked up how to use random numbers in JavaScript and learned how from here:
 http://www.javascriptkit.com/javatutors/randomnum.shtml
 
-Thanks to the Dive Into HTML5 page for how to use textBaseline to make adding 
-text to the very top easier:
+Thanks to the Dive Into HTML5 page for some good tricks. The first was how to 
+use textBaseline to make adding text to the very top easier. Another was the 
+clearRect so that the score and whatever else at the top would draw on a clean
+slate without after images when they changed.
+
 http://diveintohtml5.info/canvas.html

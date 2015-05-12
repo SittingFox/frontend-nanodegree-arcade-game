@@ -3,6 +3,8 @@ var Entity = function() {
 	// The image/sprite for our entities, this uses
     // a helper we've provided to easily load images
 	this.sprite = '';
+	this.width = 101;
+	this.height = 171;
 };
 
 // Update the entity's position, required method for game
@@ -15,7 +17,8 @@ Entity.prototype.update = function(dt) {
 
 // Draw the entity on the screen, required method for game
 Entity.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), 
+					this.x, this.y, this.width, this.height);
 };
 
 
@@ -120,12 +123,25 @@ Player.prototype.crossed = function() {
 	this.setPosition();
 }
 
+var Heart = function (x, y) {
+	Entity.call(this);
+	this.sprite = 'images/Heart.png';
+	this.x = x;
+	this.y = y;
+	this.width = 50;
+	this.height = 85;
+}
+
+Heart.prototype = Object.create(Entity.prototype);
+Heart.prototype.constructor = Heart;
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var allEnemies;
 var player;
+var hearts;
 
 function checkCollisions() {
 	for (enemy in allEnemies) {
@@ -133,6 +149,7 @@ function checkCollisions() {
 
 		if ( thisEnemy.hasHitPlayer(player.x, player.y) ) {
 			player.setPosition();
+			hearts.pop();
 		}
 	}
 }
@@ -152,7 +169,5 @@ document.addEventListener('keyup', function(e) {
 
 // This draws text onto the screen.
 function renderText() {
-	ctx.clearRect(0, 0, ctx.canvas.width, 40);
-	var canvasHeight = ctx.canvas.height;
 	ctx.fillText("Score: " + player.score, 0, 5);
 }
