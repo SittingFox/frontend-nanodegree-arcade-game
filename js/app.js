@@ -91,12 +91,6 @@ var Player = function() {
 Player.prototype = Object.create(Entity.prototype);
 Player.prototype.constructor = Player;
 
-Player.prototype.update = function() {
-	if (this.y < 0) {
-		this.crossed();
-	}
-}
-
 // Movement based on key input, without leaving map
 Player.prototype.handleInput = function(key) {	
 	if (key == 'left' && this.x > 80) {
@@ -118,22 +112,48 @@ Player.prototype.setPosition = function() {
 	this.y = 380;
 };
 
-Player.prototype.crossed = function() {
-	this.score++;
-	this.setPosition();
-}
 
-var Heart = function (x, y) {
+Player.prototype.hasCrossedRoad = function() {
+	if (this.y < 0) {
+		return true;
+	}
+	return false;
+};
+
+var Item = function (x, y) {
 	Entity.call(this);
-	this.sprite = 'images/Heart.png';
 	this.x = x;
 	this.y = y;
+}
+Item.prototype = Object.create(Entity.prototype);
+Item.prototype.constructor = Item;
+
+var Heart = function (x, y) {
+	Item.call(this, x, y);
+	this.sprite = 'images/Heart.png';
 	this.width = 50;
 	this.height = 85;
 }
 
-Heart.prototype = Object.create(Entity.prototype);
+Heart.prototype = Object.create(Item.prototype);
 Heart.prototype.constructor = Heart;
+
+var Star = function (x, y) {
+	Item.call(this, x, y);
+	this.sprite = 'images/Star.png';
+	this.width = 90;
+	this.height = 142;
+}
+
+Star.prototype = Object.create(Item.prototype);
+Star.prototype.constructor = Star;
+
+Star.prototype.isPlayerHere = function(playerX) {
+	if (this.x == playerX + 7) {
+		return true;
+	}
+	return false;
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -142,6 +162,7 @@ Heart.prototype.constructor = Heart;
 var allEnemies;
 var player;
 var hearts;
+var stars;
 
 function checkCollisions() {
 	for (enemy in allEnemies) {
@@ -152,6 +173,38 @@ function checkCollisions() {
 			hearts.pop();
 		}
 	}
+}
+
+function checkCrossing() {
+	if (player.hasCrossedRoad()) {
+		
+		var hasStar = false;
+		for (star in stars) {
+			var thisStar = stars[star];
+			
+			if (thisStar.isPlayerHere(player.x)) {
+				player.score += 10;
+				hasStar = true;
+				if (stars.length > 1) {
+					stars.splice(star,1);
+				} else {
+					setupStars();
+				}
+				break;
+			}
+		}
+		
+		if (!hasStar) {
+			player.score++;
+		}
+		
+		player.setPosition();
+	}
+}
+
+function setupStars() {
+	stars = [new Star(7, 5), new Star(107, 5), new Star(207, 5),
+				new Star(307, 5), new Star(407, 5)];
 }
 
 // This listens for key presses and sends the keys to your

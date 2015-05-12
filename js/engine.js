@@ -85,6 +85,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+        checkCrossing();
         checkCollisions();
     }
 
@@ -164,6 +165,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+        
+        stars.forEach(function(star) {
+            star.render();
+        });
 
         player.render();
         
@@ -181,6 +186,7 @@ var Engine = (function(global) {
         allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 		player = new Player();
 		hearts = [new Heart(455, -20), new Heart(405, -20), new Heart(355, -20)];
+		setupStars();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -193,7 +199,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-cat-girl.png',
-        'images/Heart.png'
+        'images/Heart.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
