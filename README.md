@@ -6,8 +6,8 @@ Welcome to my Frogger-like game!
 
 How to Start Game
 -----------------
-Download this repository, either by git clone or the .zip in the corner. Then 
-open up the index.html in your browser.
+Download this repository, either by git clone or the zip download. Then open up 
+the index.html in your browser.
 
 How to Play
 -----------
