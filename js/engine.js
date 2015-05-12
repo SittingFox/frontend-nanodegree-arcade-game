@@ -29,7 +29,7 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
     
-    // Setup for text
+    // Setup for score text
     ctx.textBaseline = "top";
     ctx.font = "30px sans-serif";
     ctx.fillStyle = "black";
@@ -85,8 +85,8 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCrossing();
-        checkCollisions();
+        checkCrossing();	// check if on other side
+        checkCollisions();	// check for loss of life
     }
 
     /* This is called by the update function  and loops through all of the
@@ -97,6 +97,7 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+		// Restart game if no more hearts
 		if (hearts.length == 0) {
 			reset();
 		}
@@ -104,7 +105,6 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -151,7 +151,7 @@ var Engine = (function(global) {
 
 
         renderEntities();
-        renderText();
+        renderText(); // draw score
     }
 
     /* This function is called by the render function and is called on each game
@@ -166,23 +166,23 @@ var Engine = (function(global) {
             enemy.render();
         });
         
+        // Loop through for all stars
         stars.forEach(function(star) {
             star.render();
         });
 
         player.render();
         
+        // Loop through for all hearts
         hearts.forEach(function(heart) {
             heart.render();
         });
     }
 
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
+    /* Part of setup for a new game, but also used for restarting the game
+     * after running out of lives.
      */
     function reset() {
-        // noop
         allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 		player = new Player();
 		hearts = [new Heart(455, -20), new Heart(405, -20), new Heart(355, -20)];
