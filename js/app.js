@@ -14,7 +14,10 @@ var Entity = function() {
 // This is reused for all entities.
 Entity.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), 
-					this.x, this.y, this.width, this.height);
+					this.x,
+					this.y,
+					this.width,
+					this.height);
 };
 
 
@@ -68,8 +71,9 @@ Enemy.prototype.setSpeed = function() {
 
 // See if player's position is within the enemy's
 Enemy.prototype.hasHitPlayer = function (playerX, playerY) {
-	if ( (this.y == playerY) && 
-		( (this.x <= playerX + 70) && (this.x >= playerX - 70) ) ) {
+	if ( (this.y == playerY)
+		&& ( (this.x <= playerX + 70)
+		&& (this.x >= playerX - 70) ) ) {
 		
 		return true;
 	}
@@ -98,14 +102,11 @@ Player.prototype.constructor = Player;
 Player.prototype.handleInput = function(key) {	
 	if (key == 'left' && this.x > 80) {
 		this.x -= this.step.x;
-	}
-	if (key == 'right' && this.x < 360) {
+	} else if (key == 'right' && this.x < 360) {
 		this.x += this.step.x;
-	}
-	if (key == 'up' && this.y > -20) {
+	} else if (key == 'up' && this.y > -20) {
 		this.y -= this.step.y;
-	}
-	if (key == 'down' && this.y < 380) {
+	} else if (key == 'down' && this.y < 380) {
 		this.y += this.step.y;
 	}
 };
@@ -175,14 +176,12 @@ var stars;
 
 // For handling loss of life
 function checkCollisions() {
-	for (enemy in allEnemies) {
-		var thisEnemy = allEnemies[enemy];
-
-		if ( thisEnemy.hasHitPlayer(player.x, player.y) ) {
+	allEnemies.forEach( function(enemy) {
+		if ( enemy.hasHitPlayer(player.x, player.y) ) {
 			player.setPosition();
 			hearts.pop();
 		}
-	}
+	});
 }
 
 // For handling getting to the other side of
@@ -192,23 +191,20 @@ function checkCrossing() {
 		
 		// Player get star?
 		var hasStar = false;
-		for (star in stars) {
-			var thisStar = stars[star];
-			
+		
+		stars.forEach( function(star, index) {
 			// Yes? Remove star and add 10 points.
-			if (thisStar.isPlayerHere(player.x)) {
+			if (star.isPlayerHere(player.x)) {
 				player.score += 10;
 				hasStar = true;
 				// Restock stars if they would be empty
 				if (stars.length > 1) {
-					stars.splice(star,1);
+					stars.splice(index,1);
 				} else {
 					setupStars();
 				}
-				// not worth checking beyond one match
-				break;
 			}
-		}
+		});
 		
 		// No? Still get a point.
 		if (!hasStar) {
@@ -222,8 +218,13 @@ function checkCrossing() {
 // For easily restocking stars, since they
 // can be replaced throughout the game
 function setupStars() {
-	stars = [new Star(7, 5), new Star(107, 5), new Star(207, 5),
-				new Star(307, 5), new Star(407, 5)];
+	stars = [
+		new Star(7, 5),
+		new Star(107, 5),
+		new Star(207, 5),
+		new Star(307, 5),
+		new Star(407, 5)
+	];
 }
 
 // This listens for key presses and sends the keys to your

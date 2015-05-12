@@ -98,7 +98,7 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
 		// Restart game if no more hearts
-		if (hearts.length == 0) {
+		if (hearts.length === 0) {
 			reset();
 		}
 		

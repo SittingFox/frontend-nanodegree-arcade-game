@@ -11,3 +11,6 @@ http://diveintohtml5.info/canvas.html
 Mozilla's JavaScript documentation was as helpful with figuring out how to use 
 the splice function for removing a single star:
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice?redirectlocale=en-US&redirectslug=JavaScript%2FReference%2FGlobal_Objects%2FArray%2Fsplice
+
+I also got some help with forEach from Mozilla as well:
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
