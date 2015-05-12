@@ -5,7 +5,6 @@ var Entity = function() {
 	// The image/sprite for our entities, this uses
     // a helper we've provided to easily load images
 	this.sprite = '';
-    this.setPosition();
 };
 
 // Update the entity's position, required method for game
@@ -21,14 +20,18 @@ Entity.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Since both enemy and player need to set positions
-Entity.prototype.setPosition = function() {};
-
 // Enemies our player must avoid
 var Enemy = function() {
 	Entity.call(this);    
     this.sprite = 'images/enemy-bug.png';
-    this.speeds = [100, 200, 300];
+    this.tracks = [
+		{x: -200, y: 60},
+		{x: -200, y: 140},
+		{x: -200, y: 220}
+    ];
+    this.speeds = [200, 300, 400];
+
+    this.setPosition();
     this.setSpeed();
 }
 
@@ -40,13 +43,16 @@ Enemy.prototype.update = function(dt) {
 	
 	if (this.x > 600) {
 		this.setPosition();
+		this.setSpeed();
 	}
 }
 
 
 Enemy.prototype.setPosition = function() {
-	this.x = -200;
-	this.y = 100;
+	var trackChoice = Math.floor(Math.random()*3);
+	var currentTrack = this.tracks[trackChoice];
+	this.x = currentTrack.x;
+	this.y = currentTrack.y;
 };
 
 // Setup speed for enemy
@@ -67,6 +73,7 @@ var Player = function() {
 		x: 100,
 		y: 80
 	};
+	this.setPosition();
 };
 
 Player.prototype = Object.create(Entity.prototype);
@@ -98,7 +105,7 @@ Player.prototype.setPosition = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
-var allEnemies = [new Enemy()];
+var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
